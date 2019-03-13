@@ -1,14 +1,18 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { injectGlobal } from 'emotion';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
 
+import store from './redux/store';
 import { ApplicationRouter } from './routing/ApplicationRouter';
 
 const App = () => (
-  <BrowserRouter>
-    <ApplicationRouter />
-  </BrowserRouter>
+  <Provider store={store}>
+    <BrowserRouter>
+      <ApplicationRouter />
+    </BrowserRouter>
+  </Provider>
 );
 
 injectGlobal(`

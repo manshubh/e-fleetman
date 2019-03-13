@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { css } from 'emotion';
 import { lighten } from 'polished';
+import { auth } from 'firebase';
+import { Link, NavLink, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { flavours, factors } from '../constants/styleTokens';
-import { Link, NavLink } from 'react-router-dom';
+import { mapStateToProps, mapActionCreators } from '../redux/store';
 
 const headerStyles = {
   wrapper: css(`
@@ -74,42 +77,58 @@ const headerStyles = {
   `)
 }
 
-export const HeaderWidget = ({
+class Header extends Component {
 
-}) => (
-    <div className={headerStyles.wrapper}>
-      <div className={headerStyles.brand}>
-        <span>
-          e-fleetman
-      </span>
-      </div>
-      <div className={headerStyles.breadCrumb}>
-        <span>
-          Driver &gt; <span>Doe, John</span>
+  logout = async () => {
+    try {
+      await auth().signOut();
+      this.props.logoutUser();
+      this.props.history.push('/login');
+    } catch (e) {
+      console.warn('err' + e);
+    }
+  }
+
+  render() {
+    return (
+      <div className={headerStyles.wrapper}>
+        <div className={headerStyles.brand}>
+          <span>
+            e-fleetman
         </span>
+        </div>
+        <div className={headerStyles.breadCrumb}>
+          <span>
+            Driver &gt; <span>Doe, John</span>
+          </span>
+        </div>
+        <div className={headerStyles.navigation}>
+          <ul>
+            <li>
+              <NavLink to={'/home'} activeClassName={'active'}>Dashboard</NavLink>
+            </li>
+            <li>
+              <a>Reports</a>
+            </li>
+            <li>
+              <a>Admin</a>
+            </li>
+          </ul>
+        </div>
+        <div className={headerStyles.profile}>
+          <a>
+            Saini, Aman
+          </a>
+        </div>
+        <div className={headerStyles.logout}>
+          <a onClick={this.logout}>
+            Logout
+          </a>
+        </div>
       </div>
-      <div className={headerStyles.navigation}>
-        <ul>
-          <li>
-            <NavLink to={'/home'} activeClassName={'active'}>Dashboard</NavLink>
-          </li>
-          <li>
-            <a>Reports</a>
-          </li>
-          <li>
-            <a>Admin</a>
-          </li>
-        </ul>
-      </div>
-      <div className={headerStyles.profile}>
-        <a>
-          Saini, Aman
-        </a>
-      </div>
-      <div className={headerStyles.logout}>
-        <Link to="/login">
-          Logout
-        </Link>
-      </div>
-    </div>
-  );
+    );
+  }
+};
+
+
+export const HeaderWidget = connect(mapStateToProps, mapActionCreators)(withRouter(Header));
