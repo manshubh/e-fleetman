@@ -94,30 +94,27 @@ class Header extends Component {
       <div className={headerStyles.wrapper}>
         <div className={headerStyles.brand}>
           <span>
-            e-fleetman
+            Rotaract District Quiz
         </span>
         </div>
         <div className={headerStyles.breadCrumb}>
           <span>
-            Driver &gt; <span>Doe, John</span>
+            User &gt; <span>Doe, John</span>
           </span>
         </div>
         <div className={headerStyles.navigation}>
           <ul>
             <li>
-              <NavLink to={'/home'} activeClassName={'active'}>Dashboard</NavLink>
+              <NavLink to={'/leaderboard'} activeClassName={'active'}>LeaderBoard</NavLink>
             </li>
             <li>
-              <a>Reports</a>
-            </li>
-            <li>
-              <a>Admin</a>
+              <NavLink to={'/quiz'} activeClassName={'active'}>Quiz</NavLink>
             </li>
           </ul>
         </div>
         <div className={headerStyles.profile}>
           <a>
-            Saini, Aman
+            Rihal, Manshubh
           </a>
         </div>
         <div className={headerStyles.logout}>

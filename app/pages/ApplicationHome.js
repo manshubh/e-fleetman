@@ -5,6 +5,6 @@ import { LeftNavContentBodyWidget } from '../widgets/LeftNavContentBodyWidget';
 export const ApplicationHome = () => (
   <div>
     <HeaderWidget />
-    <LeftNavContentBodyWidget />
+    {/* <LeftNavContentBodyWidget /> */}
   </div>
 );

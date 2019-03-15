@@ -1,9 +1,9 @@
 {
-  "name": "e-fleetman",
+  "name": "rac-quiz",
   "version": "1.0.0",
-  "description": "fleet management and GPS tracking",
+  "description": "Rotaract Quiz",
   "main": "app.js",
-  "author": "thejsguy",
+  "author": "manshubh",
   "license": "MIT",
   "private": true,
   "scripts": {
@@ -24,6 +24,7 @@
     "react-dom": "^16.7.0",
     "react-redux": "^6.0.0",
     "react-router-dom": "^4.3.1",
+    "react-transition-group": "1.2.1",
     "redux": "^4.0.1",
     "redux-logic": "^2.1.1",
     "style-loader": "^0.23.1",

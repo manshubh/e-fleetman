@@ -1,13 +1,12 @@
 import { initializeApp } from 'firebase';
 
-export class FirebaseConnector {
+class FirebaseConnector {
   static config = {
-    apiKey: 'AIzaSyC3pway3KYhxWOeWP8pSxb6dpSjaBiAlnI',
-    authDomain: 'fleetman-e0cfa.firebaseapp.com',
-    databaseURL: 'https://fleetman-e0cfa.firebaseio.com',
-    projectId: 'fleetman-e0cfa',
-    storageBucket: 'fleetman-e0cfa.appspot.com',
-    messagingSenderId: '70343576408'
+    authDomain: "rac-quiz.firebaseapp.com",
+    databaseURL: "https://rac-quiz.firebaseio.com",
+    projectId: "rac-quiz",
+    storageBucket: "rac-quiz.appspot.com",
+    messagingSenderId: "161925869282"
   };
 
   constructor() {
@@ -15,3 +14,4 @@ export class FirebaseConnector {
   }
 }
 
+export const connection =  new FirebaseConnector();

@@ -1,0 +1,23 @@
+.question {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.option {
+  color: blue;
+  padding-left: 2px;
+  padding-top: 5px;
+}
+
+
+.answerOptions {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.questionList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}

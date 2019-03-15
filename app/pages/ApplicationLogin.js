@@ -24,7 +24,7 @@ export class ApplicationLogin extends Component {
             }
           },
           signInFlow: 'popup',
-          signInSuccessUrl: '/home/dashboard',
+          signInSuccessUrl: '/leaderboard',
           signInOptions: [
             fireAuth.EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD,
           ],
