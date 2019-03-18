@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { mapActionCreators, mapStateToProps } from '../../redux/store';
 import { css } from 'emotion';
-import { Button } from '../../atoms/Button';
+import Table, { TableBody, TableData, TableHead, TableHeadingData, TableRow } from '../../atoms/Table';
+import { Loader } from '../../atoms/Loader';
 
 const { wrapper, table } = getStyles();
 class DriversPageComponent extends Component {
@@ -20,29 +21,29 @@ class DriversPageComponent extends Component {
     const { drivers: { driversList = [], isLoading } } = this.props;
     return (
       <div className={wrapper}>
-        {isLoading ? <div>Loading...</div> : null}
-        <table className={table}>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Age</th>
-              <th>Vehicle</th>
-            </tr>
-          </thead>
-          <tbody>
+        {isLoading ? <Loader /> : null}
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableHeadingData>ID</TableHeadingData>
+              <TableHeadingData>Name</TableHeadingData>
+              <TableHeadingData>Age</TableHeadingData>
+              <TableHeadingData>Vehicle</TableHeadingData>
+            </TableRow>
+          </TableHead>
+          <TableBody>
             {
               driversList.map((driver, index) => (
-                <tr key={`____driver____${index}____`}>
-                  <td>{driver.id}</td>
-                  <td>{driver.name}</td>
-                  <td>{driver.age}</td>
-                  <td>{driver.vehicle}</td>
-                </tr>
+                <TableRow key={`driver-list-item-${index}`}>
+                  <TableData>{driver.id}</TableData>
+                  <TableData>{driver.name}</TableData>
+                  <TableData>{driver.age}</TableData>
+                  <TableData>{driver.vehicle}</TableData>
+                </TableRow>
               ))
             }
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </div>
     );
   }

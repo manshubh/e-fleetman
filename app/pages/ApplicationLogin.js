@@ -50,7 +50,7 @@ export class ApplicationLogin extends Component {
 function getStyles() {
   return {
     wrapper: css(`
-      background-image: url(${bgImage});
+      background-image: url(/${bgImage});
       width: 100%;
       height: 100%;
       position: fixed;
