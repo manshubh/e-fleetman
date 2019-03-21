@@ -1,8 +1,9 @@
 import { auth as fireAuth } from 'firebase';
 import { auth } from 'firebaseui';
+import store from '../../redux/store';
+import { authenticationActions } from '../../redux/modules/authentication/authentication.actions';
 
 const ui = new auth.AuthUI(fireAuth());
-
 
 class AuthenticationService {
   constructor() { }
@@ -14,7 +15,8 @@ class AuthenticationService {
           ui.start(`#${domTag}`, {
             callbacks: {
               signInSuccessWithAuthResult: (authResult, redirectUrl) => {
-                return true;
+                store.dispatch(authenticationActions.userLoggedIn(authResult, redirectUrl));
+                return false;
               },
               uiShown: () => {
                 resolve();
@@ -40,3 +42,5 @@ class AuthenticationService {
 
   logout() { }
 }
+
+export const authenticationService = new AuthenticationService();

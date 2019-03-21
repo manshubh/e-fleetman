@@ -1,44 +1,27 @@
 import React, { Component } from 'react';
-import { auth as fireAuth } from 'firebase';
-import { auth } from 'firebaseui';
+import { connect } from 'react-redux';
 import { css } from 'emotion';
 import 'firebaseui/dist/firebaseui.css';
 import bgImage from './assets/adventure-calm-clouds.jpg';
-import { Button } from '../atoms/Button';
+import { mapStateToProps, mapActionCreators } from '../redux/store';
 
-const loginTag = '__logintag__';
-const ui = new auth.AuthUI(fireAuth());
 const styles = getStyles();
-export class ApplicationLogin extends Component {
+class ApplicationLoginComponent extends Component {
   loginStarted = false;
   componentDidMount() {
-    try {
-      if (document.querySelector(`#${loginTag}`) && !this.loginStarted) {
-        ui.start(`#${loginTag}`, {
-          callbacks: {
-            signInSuccessWithAuthResult: (authResult, redirectUrl) => {
-              return true;
-            },
-            uiShown: () => {
-
-            }
-          },
-          signInFlow: 'popup',
-          signInSuccessUrl: '/home/dashboard',
-          signInOptions: [
-            fireAuth.EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD,
-          ],
-          credentialHelper: [
-            auth.CredentialHelper.NONE
-          ]
-        });
-        this.loginStarted = true;
-      }
-    }
-    catch (e) { }
+    const { authenticationActions } = this.props;
+    authenticationActions.initLoginUI();
   }
 
+  componentWillReceiveProps(newProps) {
+    console.info(newProps);
+  }
+
+  /** disable component update since firebase will do all the DOM manipluations here */
+  shouldComponentUpdate = () => false;
+
   render() {
+    const { authentication: { loginTag } } = this.props;
     return (
       <div className={styles.wrapper}>
         <div id={loginTag} className={styles.loginWrapper}></div>
@@ -46,6 +29,8 @@ export class ApplicationLogin extends Component {
     );
   }
 }
+
+export const ApplicationLogin = connect(mapStateToProps, mapActionCreators)(ApplicationLoginComponent);
 
 function getStyles() {
   return {

@@ -1,8 +1,6 @@
 import { FirebaseConnector } from './FirebaseConnector';
 import { firestore } from 'firebase';
 
-export const connection = new FirebaseConnector();
-
 export class FireStoreBaseObject {
   collectionName = '';
 

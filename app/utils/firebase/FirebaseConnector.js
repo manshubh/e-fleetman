@@ -1,6 +1,6 @@
-import { initializeApp } from 'firebase';
+import firebase, { initializeApp } from 'firebase';
 
-export class FirebaseConnector {
+class FirebaseConnector {
   static config = {
     apiKey: 'AIzaSyC3pway3KYhxWOeWP8pSxb6dpSjaBiAlnI',
     authDomain: 'fleetman-e0cfa.firebaseapp.com',
@@ -13,5 +13,11 @@ export class FirebaseConnector {
   constructor() {
     initializeApp(FirebaseConnector.config);
   }
+
+  getInstance() {
+    return firebase;
+  }
 }
+
+export const firebaseConnection = new FirebaseConnector();
 
