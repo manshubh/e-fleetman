@@ -1,12 +1,14 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import '../styles/index.css'
 
 function Question(props) {
-  return <h2 className="question">{props.content}</h2>;
+  return (
+    <div>
+      <h2 className="question">{props.content.text}</h2>
+      <h4 className="question">Hint: {props.content.hint}</h4>
+      {props.content.img ? <center><img src={props.content.img}></img></center> : null}
+    </div>
+  );
 }
-
-Question.propTypes = {
-  content: PropTypes.string.isRequired
-};
 
 export default Question;

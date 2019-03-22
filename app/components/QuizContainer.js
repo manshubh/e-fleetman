@@ -3,7 +3,7 @@ import Quiz from './Quiz';
 import Result from './Result';
 import '../styles/QuizContainer.css';
 import '../styles/index.css';
-import { firestore, auth } from 'firebase';
+import { firestore, auth, functions } from 'firebase';
 const db = firestore();
 class QuizContainer extends Component {
   constructor(props) {
@@ -13,30 +13,35 @@ class QuizContainer extends Component {
       counter: 0,
       questionId: 0,
       question: '',
-      answerOptions: [],
       answer: '',
-      answers: {},
-      result: '',
+      result: false,
       quizQuestions: {},
-      loading: true
+      loading: true,
+      user: auth().currentUser ? auth().currentUser.email : null,
+      finish: false
     };
-
-    this.handleAnswerSelected = this.handleAnswerSelected.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+    this.handleAnswerChange = this.handleAnswerChange.bind(this);
   }
 
   componentWillMount() {
-    db.collection('questions').doc('quiz-test').get()
+    if (this.state.user) {
+      db.collection('answers').doc(this.state.user).get()
+      .then(doc => {
+        if (doc.exists) {
+          this.setState({
+            questionId: doc.data().nextQuestionId || 0
+          });
+        }
+      });
+      db.collection('questions').doc('quiz-test').get()
       .then(doc => {
         if (doc.exists) {
           const quizQuestions = doc.data();
           if (quizQuestions.isQuizActive) {
-            const shuffledAnswerOptions = quizQuestions.questions.map(question =>
-              this.shuffleArray(question.answers)
-            );
             this.setState({
               quizQuestions,
-              question: quizQuestions.questions[0].question,
-              answerOptions: shuffledAnswerOptions[0],
+              question: quizQuestions.questions[0],
               loading: false
             });
           } else {
@@ -47,64 +52,49 @@ class QuizContainer extends Component {
         }
       }
     );
-  }
-
-  shuffleArray(array) {
-    var currentIndex = array.length,
-      temporaryValue,
-      randomIndex;
-
-    // While there remain elements to shuffle...
-    while (0 !== currentIndex) {
-      // Pick a remaining element...
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex -= 1;
-
-      // And swap it with the current element.
-      temporaryValue = array[currentIndex];
-      array[currentIndex] = array[randomIndex];
-      array[randomIndex] = temporaryValue;
     }
-
-    return array;
   }
 
-  handleAnswerSelected(event) {
+  handleAnswerChange(event) {
     this.setUserAnswer(event.currentTarget.value);
 
-    if (this.state.questionId + 1 < this.state.quizQuestions.questions.length) {
-      setTimeout(() => this.setNextQuestion(), 300);
-    } else {
-      setTimeout(() => this.sendResults(), 300);
-    }
+  }
+
+  onSubmit(event) {
+    // functions().useFunctionsEmulator('http://localhost:5000');
+    var addMessage = functions().httpsCallable('addMessage');
+    addMessage(this.state).then((result) => {
+      this.setState({ result: result.data.result });
+      if (result.data.result) {
+        db.collection('answers').doc(this.state.user)
+          .set({
+            nextQuestionId: this.state.questionId + 1,
+            lastAnswerTimeStamp: new Date().getTime()
+          }, {merge:true});
+        setTimeout(() => this.setNextQuestion(), 3000);
+      }
+    });
   }
 
   setUserAnswer(answer) {
-    this.setState((state, props) => ({
-      answers: {
-        ...state.answers,
-        [state.questionId]: answer
-      },
-      answer: answer
-    }));
+    this.setState({ answer });
   }
 
   setNextQuestion() {
     const counter = this.state.counter + 1;
     const questionId = this.state.questionId + 1;
-
+    console.log(questionId);
     this.setState({
       counter: counter,
       questionId: questionId,
-      question: this.state.quizQuestions.questions[counter].question,
-      answerOptions: this.state.quizQuestions.questions[counter].answers,
-      answer: ''
+      question: this.state.quizQuestions.questions[counter],
+      answer: '',
+      result: false
     });
   }
 
-  sendResults() {
-    db.collection('answers').doc('quiz-test').set(this.state.answers);
-    this.setState({ result: 'Submitted' });
+  finishQuiz() {
+    return <Result>Congratulations, you've finished the quiz.</Result>;
   }
 
   renderQuiz() {
@@ -114,6 +104,9 @@ class QuizContainer extends Component {
     if (!this.state.quizQuestions.questions && !this.state.loading) {
       return <h5>This quiz is not active yet.</h5>;
     }
+    if (this.state.questionId + 1 > this.state.quizQuestions.questions.length) {
+      return this.finishQuiz();
+    }
     return (
       <Quiz
         answer={this.state.answer}
@@ -121,18 +114,22 @@ class QuizContainer extends Component {
         questionId={this.state.questionId}
         question={this.state.question}
         questionTotal={this.state.quizQuestions.questions.length}
-        onAnswerSelected={this.handleAnswerSelected}
+        onAnswerChange={this.handleAnswerChange}
+        onSubmit={this.onSubmit}
       />
     );
   }
 
   renderResult() {
-    return <Result quizResult={this.state.result} />;
+    return <Result>Your answer was correct. You'll be redirected to next Question.</Result>;
   }
 
   render() {
+    if(!auth().currentUser) {
+      return <h4 className="App-header">You are not logged in!</h4>;
+    }
     return (
-      <div className="App">
+      <div>
         <div className="App-header">
           <h2>Rotaract Quiz</h2>
         </div>

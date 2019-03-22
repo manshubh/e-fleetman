@@ -97,24 +97,21 @@ class Header extends Component {
             Rotaract District Quiz
         </span>
         </div>
-        <div className={headerStyles.breadCrumb}>
-          <span>
-            User &gt; <span>Doe, John</span>
-          </span>
-        </div>
         <div className={headerStyles.navigation}>
           <ul>
             <li>
-              <NavLink to={'/leaderboard'} activeClassName={'active'}>LeaderBoard</NavLink>
+              <NavLink to={'/home/leaderboard'} activeClassName={'active'}>LeaderBoard</NavLink>
             </li>
             <li>
-              <NavLink to={'/quiz'} activeClassName={'active'}>Quiz</NavLink>
+                <NavLink to={'/home/quiz'} activeClassName={'active'}>Quiz</NavLink>
+            </li>
+            <li>
+                <NavLink to={'/home/guidelines'} activeClassName={'active'}>Guidelines</NavLink>
             </li>
           </ul>
         </div>
         <div className={headerStyles.profile}>
           <a>
-            Rihal, Manshubh
           </a>
         </div>
         <div className={headerStyles.logout}>

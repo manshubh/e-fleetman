@@ -7,8 +7,7 @@ import QuizContainer from '../components/QuizContainer';
 export const ApplicationRouter = () => (
   <Switch>
     <Route path="/login" component={ApplicationLogin} />
-    <Route path="/leaderboard" component={ApplicationHome} />
-    <Route path="/quiz" component={QuizContainer} />
-    <Redirect from="/" to="/leaderboard" />
+    <Route path="/home" component={ApplicationHome} />
+    <Redirect from="/" to="/home" />
   </Switch>
 );

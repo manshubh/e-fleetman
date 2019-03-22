@@ -2,6 +2,7 @@ import { initializeApp } from 'firebase';
 
 class FirebaseConnector {
   static config = {
+    apiKey: "AIzaSyAVfRSkb5O4VxAD4PeOq652DLXBCAHU0hU",
     authDomain: "rac-quiz.firebaseapp.com",
     databaseURL: "https://rac-quiz.firebaseio.com",
     projectId: "rac-quiz",

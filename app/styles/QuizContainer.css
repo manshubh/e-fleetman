@@ -16,6 +16,10 @@
   list-style: none;
 }
 
+.App-header {
+  padding-left: 10px;
+}
+
 .questionList {
   margin: 0;
   padding: 0;

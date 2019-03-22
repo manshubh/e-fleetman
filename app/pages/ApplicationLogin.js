@@ -4,7 +4,6 @@ import { auth } from 'firebaseui';
 import { css } from 'emotion';
 import 'firebaseui/dist/firebaseui.css';
 import bgImage from './assets/adventure-calm-clouds.jpg';
-import { Button } from '../atoms/Button';
 
 const loginTag = '__logintag__';
 const ui = new auth.AuthUI(fireAuth());
@@ -24,7 +23,7 @@ export class ApplicationLogin extends Component {
             }
           },
           signInFlow: 'popup',
-          signInSuccessUrl: '/leaderboard',
+          signInSuccessUrl: '/home/leaderboard',
           signInOptions: [
             fireAuth.EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD,
           ],
